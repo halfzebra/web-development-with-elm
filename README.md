@@ -1,7 +1,7 @@
 # Web Development with Elm
 
 1. Elm: Installation and Building the first project
-    1. [Starting-up with your first Elm App](/1-1-starting-up-with-your-first-elm-app/src/Main.elm)
+    1. [Starting-up with your first Elm App](/1-1-starting-up-with-your-first-elm-app/README.md)
     2. [Get familiar with Elm syntax](/1-2-get-familiar-with-elm-syntax/src/Main.elm)
     3. [Expressing the Model with Built-in Data types](/1-3-expressing-the-model-with-built-in-data-types/src/Main.elm)
     4. [Persistent data structures in Elm](/1-4-persistent-data-structures-in-elm/src/Main.elm)
