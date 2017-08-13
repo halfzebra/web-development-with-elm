@@ -11,7 +11,7 @@
      [8. Rendering the Model with HTML and CSS](/1-8-rendering-the-model-with-html-and-css/src/Main.elm)  
   
 2. Architecting Webapps: The Elm Architecture  
-     [1. Introducing Side effects with Beginner program]()  
+     [1. Introducing Side effects with Beginner program](/2-1-introducing-side-effects-with-beginner-program)  
      [2. Tasks for asynchronous computations]()  
      [3. Executing the Program with Commands]()  
      [4. Manage the initial application state with Program with Flags]()  
