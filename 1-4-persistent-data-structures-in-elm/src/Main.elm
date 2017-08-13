@@ -1,7 +1,49 @@
 module Main exposing (..)
 
 import Html exposing (text)
+import Array exposing (Array)
+import Dict exposing (Dict)
+import Set exposing (Set)
+
+
+(=>) =
+    (,)
+
+
+list =
+    --[ 1, 2, 3 ]
+    1 :: [] ++ [ 2 ]
+
+
+increment x =
+    x + 1
+
+
+htmlEntities =
+    [ "&#039;" => "'"
+    , "&rsquo;" => "'"
+    , "&quot;" => "\""
+    ]
+
+
+replace needle replaceWith haystack =
+    String.join replaceWith (String.split needle haystack)
+
+
+replaceHtmlEntities str =
+    List.foldl (uncurry replace) str htmlEntities
+
+
+queryString list =
+    list
+        |> List.map (\( a, b ) -> a ++ "=" ++ b)
+        |> String.join "&"
+        |> (++) "?"
 
 
 main =
-    text "Hello!"
+    list
+        |> List.map increment
+        |> List.foldl (+) 0
+        |> toString
+        |> text
