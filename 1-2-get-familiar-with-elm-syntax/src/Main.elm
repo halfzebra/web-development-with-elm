@@ -3,54 +3,50 @@ module Main exposing (..)
 import Html exposing (text)
 
 
-{-
-   main =
-       text "Hello"
--}
-{-
-   message =
-       "Hello from Elm!"
+message =
+    "Hello from Elm!"
 
 
-   main =
-       text (message)
--}
-{-
-   message from =
-       "Hello from " ++ from
+messageFrom from =
+    "Hello from " ++ from
 
 
-   main =
-       text (message "Elm")
--}
-
-{-
-
-message greeting from =
+messageWithGreetingFrom greeting from =
     greeting ++ " from " ++ from
 
 
-helloFrom x =
-    message "Hello"
+helloFrom =
+    messageWithGreetingFrom "Hello"
+
+
+replace needle replaceWith haystack =
+    String.join replaceWith (String.split needle haystack)
+
+
+
+{- Alternative implemenation using pipes:
+
+   replace needle replaceWith haystack =
+       haystack
+           |> String.split needle
+           |> String.join replaceWith
+-}
+
+
+increment x =
+    x + 1
+
+
+lambdaIncrement =
+    (\x -> x + 1)
 
 
 main =
-    text (helloFrom "Elm")
-
--}
-
-
-{-
-
-   message =
-       "Hello from Elm!"
-
-
-   replace needle replaceWith haystack =
-       String.join replaceWith (String.split needle haystack)
-
-
-   main =
-       text (replace "Hello" "Hola" message)
-
--}
+    -- text "Hello"
+    -- text (message)
+    -- text (messageFrom "Elm")
+    -- text (helloFrom "Elm")
+    -- text (replace "Hello" "Hola" message)
+    message
+        |> replace "Hello" "Hola"
+        |> text
