@@ -15,10 +15,6 @@ list =
     1 :: [] ++ [ 2 ]
 
 
-increment x =
-    x + 1
-
-
 htmlEntities =
     [ "&#039;" => "'"
     , "&rsquo;" => "'"
@@ -41,9 +37,13 @@ queryString list =
         |> (++) "?"
 
 
+params =
+    [ "difficulty" => "easy"
+    , "amount" => "10"
+    ]
+
+
 main =
-    list
-        |> List.map increment
-        |> List.foldl (+) 0
-        |> toString
+    params
+        |> queryString
         |> text
