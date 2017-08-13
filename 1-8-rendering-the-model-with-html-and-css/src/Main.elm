@@ -1,6 +1,5 @@
 module Main exposing (..)
 
-import Html exposing (text)
 import Data.Question exposing (Question)
 import View.Question
 
