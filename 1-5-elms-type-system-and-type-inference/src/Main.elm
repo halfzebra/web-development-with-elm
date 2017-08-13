@@ -27,11 +27,11 @@ questions =
     [ Question
         "Why did the chicken cross the road?"
         "To get to the other side"
-        [ "" ]
-    , Question
-        "Why did the chicken cross the Möbius strip?"
-        "To get to the same side."
-        [ "" ]
+        [ "I don't know!" ]
+    , { question = "Why did the chicken cross the Möbius strip?"
+      , correct = "To get to the same side."
+      , incorrect = [ "To get to the other side" ]
+      }
     ]
 
 
