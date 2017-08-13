@@ -6,19 +6,24 @@ import Dict exposing (Dict)
 import Set exposing (Set)
 
 
-(=>) =
-    (,)
-
-
 list =
     --[ 1, 2, 3 ]
     1 :: [] ++ [ 2 ]
+
+
+
+-- UTIL
+
+
+(=>) =
+    (,)
 
 
 htmlEntities =
     [ "&#039;" => "'"
     , "&rsquo;" => "'"
     , "&quot;" => "\""
+    , "&eacute;" => "é"
     ]
 
 
@@ -43,7 +48,30 @@ params =
     ]
 
 
+
+-- MODEL
+
+
+init =
+    [ { question = "&quot;Why did the chicken cross the road?&quot;"
+      , correct = "&quot;To get to the other side&quot;"
+      , incorrect = [ "&quot;No idea!&quot;" ]
+      }
+    ]
+
+
+view { question, correct, incorrect } =
+    "Question: "
+        ++ (replaceHtmlEntities question)
+        ++ " Answer: "
+        ++ (replaceHtmlEntities correct)
+
+
 main =
-    params
-        |> queryString
+    --    params
+    --        |> queryString
+    --        |> text
+    init
+        |> List.map view
+        |> String.join " "
         |> text

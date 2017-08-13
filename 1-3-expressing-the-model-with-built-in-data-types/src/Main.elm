@@ -11,15 +11,11 @@ questionTuple =
 
 
 anotherQuestionTuple =
-    ( Tuple.first questionTuple, "It was too far to walk around" )
+    (Tuple.first questionTuple => "It was too far to walk around")
 
 
 questionTupleView ( question, answer ) =
     text ("Question: " ++ question ++ " Answer: " ++ answer)
-
-
-tupleWithDfifferentTypes x str =
-    ( x, str )
 
 
 (=>) =
@@ -52,8 +48,13 @@ questionRecordView { question, answer } =
        --    text ("Question: " ++ (.question model) ++ " Answer: " ++ (.answer model))
 
 -}
+-- MODEL
+
+
+init =
+    questionRecord
 
 
 main =
-    -- questionRecordView questionRecord
-    questionTupleView questionTuple
+    -- questionTupleView questionTuple
+    questionRecordView init

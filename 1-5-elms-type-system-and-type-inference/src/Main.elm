@@ -15,6 +15,20 @@ type Difficulty
     | Hard
 
 
+default : Difficulty
+default =
+    Medium
+
+
+list : List ( String, Difficulty )
+list =
+    [ "Any" => Any
+    , "Easy" => Easy
+    , "Medium" => Medium
+    , "Hard" => Hard
+    ]
+
+
 type alias Question =
     { question : String
     , correct : String
@@ -22,13 +36,19 @@ type alias Question =
     }
 
 
+type alias Model =
+    { difficulty : Difficulty
+    , questions : List Question
+    }
+
+
 questions : List Question
 questions =
     [ Question
-        "Why did the chicken cross the road?"
+        "&quot;Why did the chicken cross the road?&quot;"
         "To get to the other side"
         [ "I don't know!" ]
-    , { question = "Why did the chicken cross the Möbius strip?"
+    , { question = "&quot;Why did the chicken cross the Möbius strip?&quot;"
       , correct = "To get to the same side."
       , incorrect = [ "To get to the other side" ]
       }
@@ -45,6 +65,7 @@ htmlEntities =
     [ "&#039;" => "'"
     , "&rsquo;" => "'"
     , "&quot;" => "\""
+    , "&eacute;" => "é"
     ]
 
 
@@ -53,11 +74,25 @@ replaceHtmlEntities str =
     List.foldl (uncurry replace) str htmlEntities
 
 
-stringWithHtmlSpecialCharacters : String
-stringWithHtmlSpecialCharacters =
-    "A pure function has no &quot;back doors&quot;"
+init : Model
+init =
+    Model default questions
+
+
+view : Model -> Html msg
+view { questions } =
+    questions
+        |> List.map
+            (\{ question, correct } ->
+                "Question: "
+                    ++ (replaceHtmlEntities question)
+                    ++ " Answer: "
+                    ++ (replaceHtmlEntities correct)
+            )
+        |> String.join " "
+        |> text
 
 
 main : Html msg
 main =
-    text (replaceHtmlEntities stringWithHtmlSpecialCharacters)
+    view init
