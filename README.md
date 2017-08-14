@@ -8,12 +8,12 @@
   5. [Elm’s Type system and Type inference](/1-5-elms-type-system-and-type-inference/src/Main.elm)  
   6. [Maybe and the Result data types](/1-6-maybe-and-result-data-types/Main.elm)  
   7. [Module system in Elm](/1-7-module-system-in-elm/src/Main.elm)  
-  8. [Rendering the Model with HTML and CSS](/1-8-rendering-the-model-with-html-and-css/src/Main.elm)  
+  8. [Rendering the Model with HTML and CSS](/1-8-rendering-the-model-with-html-and-css/src/Main.elm#L28)  
   
 ## 2. Architecting Webapps: The Elm Architecture
-  1. [Introducing Side effects with Beginner program](/2-1-introducing-side-effects-with-beginner-program)  
+  1. [Introducing Side effects with Beginner program](/2-1-introducing-side-effects-with-beginner-program/src/Main.elm)  
   2. [Tasks for asynchronous computations]()  
-  3. [Executing the Program with Commands]()  
+  3. [Executing the Program with Commands](/2-3-executing-the-program-with-commands/src)  
   4. [Manage the initial application state with Program with Flags]()  
   5. [Communication with the Server]()  
   6. [Encoding and Decoding the JSON Structures]()  
@@ -22,11 +22,11 @@
 ## 3. Explore The Elm Tooling
   1. [Development tools: elm-format, Time Traveling Debugger and elm-reactor]()  
   2. [Package manager and open-source packages]()  
-  3. [Testing your modules]()  
+  3. [Testing your modules](/3-3-testing-your-modules/tests)
   4. [Type safe CSS with elm-css]()
   
 ## 4. Going Further with Elm
-  1. [Encapsulation and Code Organization]()  
+  1. [Encapsulation and Code Organization](/4-1-encapsulation-and-code-organization/src/Data)  
   2. [Managing the Messages with Tagger]()  
   3. [Rendering performance optimizations with Html.Lazy]()  
   4. [Lazy Computations in Elm]()  
