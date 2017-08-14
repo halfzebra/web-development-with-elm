@@ -28,5 +28,5 @@
 ## 4. Going Further with Elm
   1. [Encapsulation and Code Organization](/4-1-encapsulation-and-code-organization/src/Data)  
   2. [Managing the Messages with Tagger]()  
-  3. [Rendering performance optimizations with Html.Lazy]()  
+  3. [Rendering performance optimizations with Html.Lazy](/4-3-rendering-performance-optimizations-with-html-lazy/src/Main.elm#L209)  
   4. [Lazy Computations in Elm]()  
