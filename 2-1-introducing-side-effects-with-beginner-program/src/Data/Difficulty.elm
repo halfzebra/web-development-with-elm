@@ -1,4 +1,4 @@
-module Data.Difficulty exposing (Difficulty, default)
+module Data.Difficulty exposing (Difficulty, toString, get, keys, default)
 
 import Util exposing ((=>))
 
@@ -10,6 +10,11 @@ type Difficulty
     | Hard
 
 
+default : Difficulty
+default =
+    Any
+
+
 list : List ( String, Difficulty )
 list =
     [ "Any" => Any
@@ -19,6 +24,26 @@ list =
     ]
 
 
-default : Difficulty
-default =
-    Any
+get : String -> Difficulty
+get name =
+    list
+        |> List.filter (\( k, v ) -> k == name)
+        |> List.head
+        |> Maybe.map Tuple.second
+        |> Maybe.withDefault Any
+
+
+keys : List String
+keys =
+    list
+        |> List.unzip
+        |> Tuple.first
+
+
+toString : Difficulty -> String
+toString tag =
+    list
+        |> List.filter (\( k, v ) -> v == tag)
+        |> List.head
+        |> Maybe.map Tuple.first
+        |> Maybe.withDefault "Any"
