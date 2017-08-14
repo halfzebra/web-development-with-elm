@@ -6,4 +6,4 @@ How to read and define type annotations. Introduction to the concept of Type ali
 - Union types
 
 
-This project is bootstrapped with [Create Elm App](https://github.com/halfzebra/create-elm-app).
+This project is bootstrapped with [Create Elm App.](https://github.com/halfzebra/create-elm-app)
