@@ -19,22 +19,6 @@ list =
     (,)
 
 
-htmlEntities =
-    [ "&#039;" => "'"
-    , "&rsquo;" => "'"
-    , "&quot;" => "\""
-    , "&eacute;" => "é"
-    ]
-
-
-replace needle replaceWith haystack =
-    String.join replaceWith (String.split needle haystack)
-
-
-replaceHtmlEntities str =
-    List.foldl (uncurry replace) str htmlEntities
-
-
 queryString list =
     list
         |> List.map (\( a, b ) -> a ++ "=" ++ b)
@@ -53,18 +37,18 @@ params =
 
 
 init =
-    [ { question = "&quot;Why did the chicken cross the road?&quot;"
-      , correct = "&quot;To get to the other side&quot;"
-      , incorrect = [ "&quot;No idea!&quot;" ]
+    [ { question = "Why did the chicken cross the road?"
+      , correct = "To get to the other side"
+      , incorrect = [ "No idea!" ]
       }
     ]
 
 
 view { question, correct, incorrect } =
     "Question: "
-        ++ (replaceHtmlEntities question)
+        ++ question
         ++ " Answer: "
-        ++ (replaceHtmlEntities correct)
+        ++ correct
 
 
 main =
