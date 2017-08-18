@@ -3,58 +3,45 @@ module Main exposing (..)
 import Html exposing (text)
 
 
--- Using Tuples
+{-
+
+   question =
+       "Why did the chicken cross the road?"
 
 
-questionTuple =
-    ( "Why did the chicken cross the road?", "To get to the other side" )
+   answer =
+       "To get to the other side"
 
 
-anotherQuestionTuple =
-    (Tuple.first questionTuple => "It was too far to walk around")
+   init =
+       ( question, answer )
 
 
-questionTupleView ( question, answer ) =
-    text ("Question: " ++ question ++ " Answer: " ++ answer)
+   view (question, answer) =
+       text
+           ("Question: "
+               ++ (Tuple.first model)
+               ++ " Answer: "
+               ++ (Tuple.second model)
+           )
+
+-}
 
 
-(=>) =
-    (,)
-
-
-
--- Using Records
-
-
-questionRecord =
+init =
     { question = "Why did the chicken cross the road?"
     , answer = "To get to the other side"
     }
 
 
-anotherQuestionRecord =
-    { questionRecord | answer = "It was too far to walk around" }
-
-
-questionRecordView { question, answer } =
-    text ("Question: " ++ question ++ " Answer: " ++ answer)
-
-
-
-{- Alternative implementation without destructuring:
-
-   questionRecordView model =
-       text ("Question: " ++ model.question ++ " Answer: " ++ model.answer)
-       --    text ("Question: " ++ (.question model) ++ " Answer: " ++ (.answer model))
-
--}
--- MODEL
-
-
-init =
-    questionRecord
+view model =
+    text
+        ("Question: "
+            ++ (.question model)
+            ++ " Answer: "
+            ++ (.answer model)
+        )
 
 
 main =
-    -- questionTupleView questionTuple
-    questionRecordView init
+    view init

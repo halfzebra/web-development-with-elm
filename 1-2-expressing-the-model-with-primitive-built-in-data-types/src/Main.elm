@@ -4,26 +4,36 @@ import Html exposing (text)
 
 
 question =
-    "The board game Go has more possible legal positions than the number of atoms in the visible universe."
+    "Why did the chicken cross the road?"
 
 
 answer =
-    True
-
-
-addLabels question answer =
-    "Question: " ++ question ++ " Answer: " ++ (toString answer)
+    "To get to the other side"
 
 
 view model =
-    model
-        |> String.toUpper
-        |> text
+    text model
 
 
 init =
-    addLabels question answer
+    "Question: "
+        ++ question
+        ++ " Answer: "
+        ++ answer
+
+
+sum a b =
+    a + b
+
+
+sumWithOne b =
+    sum 1
+
+
+toUpperLambda =
+    (\str -> String.toUpper str)
 
 
 main =
-    view init
+    -- view init
+    text (toString (sumWithOne 1))
