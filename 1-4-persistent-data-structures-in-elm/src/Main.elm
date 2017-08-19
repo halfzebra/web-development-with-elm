@@ -1,61 +1,83 @@
 module Main exposing (..)
 
 import Html exposing (text)
-import Array exposing (Array)
-import Dict exposing (Dict)
-import Set exposing (Set)
+import Set
+import Array
+import Dict
+
+
+init =
+    { question = "Why did the chicken cross the road?"
+    , answer = "To get to the other side"
+    }
+
+
+view model =
+    text
+        ("Question: "
+            ++ (.question model)
+            ++ " Answer: "
+            ++ (.answer model)
+        )
 
 
 list =
-    --[ 1, 2, 3 ]
-    1 :: [] ++ [ 2 ]
+    1 :: [ 2 ] ++ [ 3 ]
 
 
+transformList list =
+    list
+        |> List.map (\a -> a + 1)
+        |> List.map toString
+        |> String.join ", "
 
--- UTIL
+
+set =
+    Set.fromList (list)
+
+
+transformSet set =
+    set
+        |> Set.map (\a -> a + 1)
+        |> Set.map toString
+        |> Set.toList
+        |> String.join ", "
+
+
+array =
+    Array.empty
+        |> Array.push 1
+        |> Array.push 2
+        |> Array.push 3
+
+
+transformArray array =
+    array
+        |> Array.get 1
+        |> toString
 
 
 (=>) =
     (,)
 
 
-queryString list =
-    list
-        |> List.map (\( a, b ) -> a ++ "=" ++ b)
-        |> String.join "&"
-        |> (++) "?"
+dict =
+    Dict.fromList
+        [ "question" => "Why did the chicken cross the road?"
+        , "answer" => "To get to the other side"
+        ]
 
 
-params =
-    [ "difficulty" => "easy"
-    , "amount" => "10"
-    ]
-
-
-
--- MODEL
-
-
-init =
-    [ { question = "Why did the chicken cross the road?"
-      , correct = "To get to the other side"
-      , incorrect = [ "No idea!" ]
-      }
-    ]
-
-
-view { question, correct, incorrect } =
-    "Question: "
-        ++ question
-        ++ " Answer: "
-        ++ correct
+transformDict dict =
+    Dict.update
+        "answer"
+        (\a -> (Maybe.map String.toUpper) a)
+        dict
 
 
 main =
-    --    params
-    --        |> queryString
-    --        |> text
-    init
-        |> List.map view
-        |> String.join " "
+    -- view init
+    dict
+        |> transformDict
+        |> toString
         |> text
