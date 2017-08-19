@@ -8,12 +8,13 @@ import View.Question
 import View.Difficulty
 import View.Form
 import Util exposing ((=>), onChange)
+import Array exposing (Array)
 
 
 type alias Model =
     { difficulty : Difficulty
     , amount : Int
-    , questions : List Question
+    , questions : Array Question
     }
 
 
@@ -21,15 +22,18 @@ init : Model
 init =
     Model Data.Difficulty.default
         5
-        [ Question
-            "Why did the chicken cross the road?"
-            "To get to the other side"
-            [ "I don't know" ]
-        ]
+        (Array.fromList
+            [ Question
+                Nothing
+                "Why did the chicken cross the road?"
+                "To get to the other side"
+                [ "I don't know" ]
+            ]
+        )
 
 
 type Msg
-    = Answer String
+    = Answer Int String
     | ChangeDifficulty Difficulty
     | UpdateAmount String
 
@@ -51,8 +55,13 @@ update msg model =
         ChangeDifficulty lvl ->
             { model | difficulty = lvl }
 
-        _ ->
-            model
+        Answer i answer ->
+            model.questions
+                |> Array.get i
+                |> Maybe.map (\q -> { q | userAnswer = Just answer })
+                |> Maybe.map (\q -> (Array.set i q model.questions))
+                |> Maybe.map (\arr -> { model | questions = arr })
+                |> Maybe.withDefault model
 
 
 view : Model -> Html Msg
@@ -73,7 +82,10 @@ view { questions, amount, difficulty } =
         , View.Difficulty.select difficulty ChangeDifficulty
         , div
             [ style [ "text-align" => "center" ] ]
-            (List.map ((flip View.Question.view) Answer) questions)
+            (questions
+                |> Array.indexedMap (\i q -> View.Question.view (Answer i) q)
+                |> Array.toList
+            )
         ]
 
 
