@@ -3,11 +3,6 @@ module Main exposing (..)
 import Html exposing (Html, text)
 
 
-(=>) : a -> b -> ( a, b )
-(=>) =
-    (,)
-
-
 type Difficulty
     = Any
     | Easy
@@ -17,7 +12,12 @@ type Difficulty
 
 default : Difficulty
 default =
-    Medium
+    Any
+
+
+(=>) : a -> b -> ( a, b )
+(=>) =
+    (,)
 
 
 list : List ( String, Difficulty )
@@ -42,41 +42,15 @@ type alias Model =
     }
 
 
-questions : List Question
-questions =
-    [ Question
-        "&quot;Why did the chicken cross the road?&quot;"
-        "To get to the other side"
-        [ "I don't know!" ]
-    , { question = "&quot;Why did the chicken cross the Möbius strip?&quot;"
-      , correct = "To get to the same side."
-      , incorrect = [ "To get to the other side" ]
-      }
-    ]
-
-
-replace : String -> String -> String -> String
-replace needle replaceWith haystack =
-    String.join replaceWith (String.split needle haystack)
-
-
-htmlEntities : List ( String, String )
-htmlEntities =
-    [ "&#039;" => "'"
-    , "&rsquo;" => "'"
-    , "&quot;" => "\""
-    , "&eacute;" => "é"
-    ]
-
-
-replaceHtmlEntities : String -> String
-replaceHtmlEntities str =
-    List.foldl (uncurry replace) str htmlEntities
-
-
 init : Model
 init =
-    Model default questions
+    Model
+        Any
+        [ Question
+            "Why did the chicken cross the road?"
+            "To get to the other side"
+            []
+        ]
 
 
 view : Model -> Html msg
@@ -85,11 +59,11 @@ view { questions } =
         |> List.map
             (\{ question, correct } ->
                 "Question: "
-                    ++ (replaceHtmlEntities question)
+                    ++ question
                     ++ " Answer: "
-                    ++ (replaceHtmlEntities correct)
+                    ++ correct
             )
-        |> String.join " "
+        |> String.join ", "
         |> text
 
 
