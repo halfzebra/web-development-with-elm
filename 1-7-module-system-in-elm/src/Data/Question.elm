@@ -2,7 +2,8 @@ module Data.Question exposing (Question)
 
 
 type alias Question =
-    { question : String
+    { userAnswer : Maybe String
+    , question : String
     , correct : String
     , incorrect : List String
     }

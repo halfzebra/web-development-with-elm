@@ -10,6 +10,11 @@ type Difficulty
     | Hard
 
 
+default : Difficulty
+default =
+    Any
+
+
 list : List ( String, Difficulty )
 list =
     [ "Any" => Any
@@ -17,8 +22,3 @@ list =
     , "Medium" => Medium
     , "Hard" => Hard
     ]
-
-
-default : Difficulty
-default =
-    Any

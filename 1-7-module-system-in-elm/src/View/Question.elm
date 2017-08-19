@@ -6,6 +6,6 @@ import Data.Question exposing (Question)
 view : Question -> String
 view { question, correct } =
     "Question: "
-        ++ (question)
+        ++ question
         ++ " Answer: "
-        ++ (correct)
+        ++ correct
