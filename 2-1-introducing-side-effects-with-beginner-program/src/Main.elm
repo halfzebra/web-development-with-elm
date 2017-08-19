@@ -1,87 +1,94 @@
 module Main exposing (..)
 
-import Html exposing (Html, div)
-import Html.Attributes exposing (style, type_, value)
+import Html exposing (Html, text, input, select, option, div)
+import Html.Attributes exposing (value)
+import Array exposing (Array)
 import Data.Difficulty exposing (Difficulty)
 import Data.Question exposing (Question)
 import View.Question
-import View.Difficulty
-import View.Form
-import Util exposing ((=>), onChange)
-import Array exposing (Array)
+import Util exposing (onChange)
 
 
 type alias Model =
-    { difficulty : Difficulty
-    , amount : Int
+    { amount : Int
+    , difficulty : Difficulty
     , questions : Array Question
     }
 
 
 init : Model
 init =
-    Model Data.Difficulty.default
+    Model
         5
+        Data.Difficulty.default
         (Array.fromList
             [ Question
                 Nothing
-                "Why did the chicken cross the road?"
-                "To get to the other side"
-                [ "I don't know" ]
+                "A caterpillar has more muscles than humans do."
+                "True"
+                [ "False" ]
+            , Question
+                Nothing
+                "A caterpillar has more muscles than humans do."
+                "True"
+                [ "False" ]
             ]
         )
 
 
 type Msg
     = Answer Int String
-    | ChangeDifficulty Difficulty
     | UpdateAmount String
+    | ChangeDifficulty Difficulty
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
+        Answer i val ->
+            model.questions
+                -- Maybe Question
+                |> Array.get i
+                -- Maybe Question
+                |> Maybe.map
+                    (\q -> { q | userAnswer = Just val })
+                -- Maybe (Array Question)
+                |> Maybe.map
+                    (\q -> Array.set i q model.questions)
+                -- Maybe Model
+                |> Maybe.map (\arr -> { model | questions = arr })
+                |> Maybe.withDefault model
+
         UpdateAmount str ->
             case String.toInt str of
                 Ok val ->
-                    if val < 50 then
-                        { model | amount = val }
-                    else
+                    if val > 50 then
                         { model | amount = 50 }
+                    else
+                        { model | amount = val }
 
-                _ ->
+                Err err ->
                     model
 
         ChangeDifficulty lvl ->
             { model | difficulty = lvl }
 
-        Answer i answer ->
-            model.questions
-                |> Array.get i
-                |> Maybe.map (\q -> { q | userAnswer = Just answer })
-                |> Maybe.map (\q -> (Array.set i q model.questions))
-                |> Maybe.map (\arr -> { model | questions = arr })
-                |> Maybe.withDefault model
-
 
 view : Model -> Html Msg
-view { questions, amount, difficulty } =
+view { amount, questions } =
     div
-        [ style
-            [ "max-width" => "300px"
-            , "margin" => "0 auto"
+        []
+        [ input
+            [ onChange UpdateAmount
+            , value (toString amount)
             ]
-        ]
-        [ View.Form.input
-            [ value (toString amount)
-            , onChange UpdateAmount
-            , type_ "number"
-            , Html.Attributes.min (toString 1)
-            , Html.Attributes.max (toString 50)
-            ]
-        , View.Difficulty.select difficulty ChangeDifficulty
+            []
+        , select [ onChange (ChangeDifficulty << Data.Difficulty.get) ]
+            (List.map (\key -> option [] [ text key ])
+                Data.Difficulty.keys
+            )
         , div
-            [ style [ "text-align" => "center" ] ]
+            []
             (questions
                 |> Array.indexedMap (\i q -> View.Question.view (Answer i) q)
                 |> Array.toList
