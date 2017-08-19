@@ -2,75 +2,103 @@ module Main exposing (..)
 
 import Html exposing (Html, text)
 import Maybe
-import Result
 
 
--- Maybe for representing the data that might be absent:
+type Difficulty
+    = Any
+    | Easy
+    | Medium
+    | Hard
 
 
-maybeMessage : Maybe String
-maybeMessage =
-    -- Nothing
-    Just ("Elm first appeared in ")
+default : Difficulty
+default =
+    Any
 
 
-unwrapMaybeMessage : Maybe String -> String
-unwrapMaybeMessage mb =
-    Maybe.withDefault "Sorry, there's no message" mb
+(=>) : a -> b -> ( a, b )
+(=>) =
+    (,)
 
 
-
-{- Alternative implementations with pattern matching:
-
-   unwrapMaybeMessage mb =
-       case mb of
-           Just x ->
-               x
-
-           Nothing ->
-               "Sorry, there's no message"
+list : List ( String, Difficulty )
+list =
+    [ "Any" => Any
+    , "Easy" => Easy
+    , "Medium" => Medium
+    , "Hard" => Hard
+    ]
 
 
-   unwrapMaybeMessage mb =
-       if mb == Just x then
-           x
-       else
-           "Sorry, there's no message"
--}
+type alias Question =
+    { userAnswer : Maybe String
+    , question : String
+    , correct : String
+    , incorrect : List String
+    }
 
 
-parsedYear : Result String Int
-parsedYear =
-    String.toInt "2012"
+type alias Model =
+    { difficulty : Difficulty
+    , questions : List Question
+    }
 
 
+init : Model
+init =
+    Model
+        Any
+        [ Question
+            (Just "To get to the other side")
+            "Why did the chicken cross the road?"
+            "To get to the other side"
+            []
+        ]
 
--- Alternative way of unwrapping Result x a with pattern matching
+
+unwrapMaybe : Maybe String -> String
+unwrapMaybe mb =
+    Maybe.withDefault "There's no answer" mb
 
 
-parsedYearVal : String
-parsedYearVal =
-    case parsedYear of
-        Ok x ->
-            toString x
+parsedInt : Result String Int
+parsedInt =
+    String.toInt "5"
+
+
+unwrapResult : Result String Int -> Int
+unwrapResult res =
+    case res of
+        Ok val ->
+            val
 
         Err err ->
-            Debug.crash "I don't know when elm was created!"
+            5
+
+
+view : Model -> Html msg
+view { questions } =
+    questions
+        |> List.map
+            (\{ question, userAnswer } ->
+                "Question: "
+                    ++ question
+                    ++ " Answer: "
+                    ++ (userAnswer
+                            |> Maybe.map String.toUpper
+                            |> Maybe.map String.reverse
+                            |> unwrapMaybe
+                       )
+            )
+        |> String.join ", "
+        |> text
 
 
 main : Html msg
 main =
-    let
-        maybeParsedYear : Maybe String
-        maybeParsedYear =
-            Maybe.map toString (Result.toMaybe (parsedYear))
-
-        fullMessage : String
-        fullMessage =
-            maybeMessage
-                |> Maybe.map2 (\a b -> b ++ a) maybeParsedYear
-                |> Maybe.map String.toUpper
-                |> unwrapMaybeMessage
-    in
-        -- text parsedYearVal
-        text fullMessage
+    -- view init
+    parsedInt
+        |> Result.toMaybe
+        |> Maybe.map toString
+        |> unwrapMaybe
+        |> text
