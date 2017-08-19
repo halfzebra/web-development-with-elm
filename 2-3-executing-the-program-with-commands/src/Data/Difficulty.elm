@@ -1,4 +1,4 @@
-module Data.Difficulty exposing (Difficulty, toString, get, keys, default)
+module Data.Difficulty exposing (Difficulty, toString, get, keys, isAny, default)
 
 import Util exposing ((=>))
 
@@ -47,3 +47,8 @@ toString tag =
         |> List.head
         |> Maybe.map Tuple.first
         |> Maybe.withDefault "Any"
+
+
+isAny : Difficulty -> Bool
+isAny difficulty =
+    difficulty == Any

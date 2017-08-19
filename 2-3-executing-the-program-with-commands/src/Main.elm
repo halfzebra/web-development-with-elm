@@ -1,86 +1,106 @@
 module Main exposing (..)
 
-import Html exposing (Html, div)
-import Html.Attributes exposing (style, type_, value)
+import Html exposing (Html, text, input, select, option, div)
+import Html.Attributes exposing (value)
+import Array exposing (Array)
 import Data.Difficulty exposing (Difficulty)
 import Data.Question exposing (Question)
 import View.Question
-import View.Difficulty
-import View.Form
-import Util exposing ((=>), onChange)
+import Util exposing (onChange)
 
 
 type alias Model =
-    { difficulty : Difficulty
-    , amount : Int
-    , questions : List Question
+    { amount : Int
+    , difficulty : Difficulty
+    , questions : Array Question
     }
 
 
-init : Model
+init : ( Model, Cmd Msg )
 init =
-    Model Data.Difficulty.default
+    ( Model
         5
-        [ Question
-            "Why did the chicken cross the road?"
-            "To get to the other side"
-            [ "I don't know" ]
-        ]
+        Data.Difficulty.default
+        Array.empty
+    , Cmd.none
+    )
 
 
 type Msg
-    = Answer String
-    | ChangeDifficulty Difficulty
+    = Answer Int String
     | UpdateAmount String
+    | ChangeDifficulty Difficulty
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        Answer i val ->
+            ( model.questions
+                -- Maybe Question
+                |> Array.get i
+                -- Maybe Question
+                |> Maybe.map
+                    (\q -> { q | userAnswer = Just val })
+                -- Maybe (Array Question)
+                |> Maybe.map
+                    (\q -> Array.set i q model.questions)
+                -- Maybe Model
+                |> Maybe.map (\arr -> { model | questions = arr })
+                |> Maybe.withDefault model
+            , Cmd.none
+            )
+
         UpdateAmount str ->
             case String.toInt str of
                 Ok val ->
-                    if val < 50 then
-                        { model | amount = val }
+                    if val > 50 then
+                        ( { model | amount = 50 }
+                        , Cmd.none
+                        )
                     else
-                        { model | amount = 50 }
+                        ( { model | amount = val }
+                        , Cmd.none
+                        )
 
-                _ ->
-                    model
+                Err err ->
+                    ( model
+                    , Cmd.none
+                    )
 
         ChangeDifficulty lvl ->
-            { model | difficulty = lvl }
-
-        _ ->
-            model
+            ( { model | difficulty = lvl }
+            , Cmd.none
+            )
 
 
 view : Model -> Html Msg
-view { questions, amount, difficulty } =
+view { amount, questions } =
     div
-        [ style
-            [ "max-width" => "300px"
-            , "margin" => "0 auto"
+        []
+        [ input
+            [ onChange UpdateAmount
+            , value (toString amount)
             ]
-        ]
-        [ View.Form.input
-            [ value (toString amount)
-            , onChange UpdateAmount
-            , type_ "number"
-            , Html.Attributes.min (toString 1)
-            , Html.Attributes.max (toString 50)
-            ]
-        , View.Difficulty.select difficulty ChangeDifficulty
+            []
+        , select [ onChange (ChangeDifficulty << Data.Difficulty.get) ]
+            (List.map (\key -> option [] [ text key ])
+                Data.Difficulty.keys
+            )
         , div
-            [ style [ "text-align" => "center" ] ]
-            (List.map ((flip View.Question.view) Answer) questions)
+            []
+            (questions
+                |> Array.indexedMap (\i q -> View.Question.view (Answer i) q)
+                |> Array.toList
+            )
         ]
 
 
 main : Program Never Model Msg
 main =
-    Html.beginnerProgram
-        { model = init
+    Html.program
+        { init = init
         , update = update
         , view = view
+        , subscriptions = always Sub.none
         }

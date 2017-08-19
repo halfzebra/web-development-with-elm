@@ -1,4 +1,4 @@
-module Util exposing ((=>), replaceHtmlEntities, onChange)
+module Util exposing ((=>), onChange, replaceHtmlEntities, appendIf)
 
 import Html exposing (Attribute)
 import Html.Events exposing (on, targetValue)
@@ -32,3 +32,11 @@ htmlEntities =
 replaceHtmlEntities : String -> String
 replaceHtmlEntities str =
     List.foldl (uncurry replace) str htmlEntities
+
+
+appendIf : Bool -> a -> List a -> List a
+appendIf flag value list =
+    if flag == True then
+        list ++ [ value ]
+    else
+        list
