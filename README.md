@@ -21,10 +21,10 @@ The second half of the section focuses on Json.Decode and Json.Encode modules fo
   1. [Introducing Side effects with Beginner program](/2-1-introducing-side-effects-with-beginner-program/src/Main.elm)
   2. [Tasks for asynchronous computations]()
   3. [Executing the Program with Commands](/2-3-executing-the-program-with-commands/src)  
-  4. [Manage the initial application state with Program with Flags]()
-  5. [Communication with the Server]()
-  6. [Encoding and Decoding the JSON Structures]()
-  7. [Talking to JavaScript]()
+  4. [Manage the initial application state with Program with Flags](/2-4-manage-the-initial-application-state-with-program-with-flags/src)
+  5. [Communication with the Server](/2-5-communication-with-the-server)
+  6. [Encoding and Decoding JSON](/2-6-encoding-and-decoding-json)
+  7. [Talking to JavaScript](/2-7-talking-to-javascript)
   
 ## 3. Explore The Elm Tooling
 
@@ -42,4 +42,3 @@ This section outlines core development tools you will use for application develo
   1. [Encapsulation and Code Organization](/4-1-encapsulation-and-code-organization/src/Data)
   2. [Managing the Messages with Tagger](/4-2-managing-the-messages-with-tagger/src/Main.elm#L136)
   3. [Rendering performance optimizations with Html.Lazy](/4-3-rendering-performance-optimizations-with-html-lazy/src/Main.elm#L209)
-  4. [Lazy Computations in Elm]()
