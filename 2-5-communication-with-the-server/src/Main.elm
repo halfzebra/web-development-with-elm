@@ -1,14 +1,6 @@
 module Main exposing (..)
 
-import Html
-    exposing
-        ( Html
-        , text
-        , input
-        , select
-        , option
-        , div
-        )
+import Html exposing (Html, text, input, select, option, div)
 import Html.Attributes exposing (value)
 import Array exposing (Array)
 import Data.Difficulty exposing (Difficulty)
