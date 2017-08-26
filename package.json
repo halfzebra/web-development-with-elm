@@ -1,0 +1,28 @@
+{
+  "name": "web-development-with-elm",
+  "version": "1.0.0",
+  "author": "Eduard Kyvenko <eduard.kyvenko@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/halfzebra/web-development-with-elm/issues"
+  },
+  "dependencies": {
+    "create-elm-app": "^1.3.0"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "homepage": "https://github.com/halfzebra/web-development-with-elm#readme",
+  "main": "index.js",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/halfzebra/web-development-with-elm.git"
+  },
+  "scripts": {
+    "test": "mocha ./tests/examples.spec.js"
+  },
+  "devDependencies": {
+    "chai": "^4.1.1",
+    "mocha": "^3.5.0"
+  }
+}
