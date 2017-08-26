@@ -6,6 +6,8 @@ This project is bootstrapped with [Create Elm App.](https://github.com/halfzebra
 
 ### `src/Main.elm`
 
+We have added two mode messages `Start` and `GetQuestions (Result Error Value)`
+
 ```elm
 
 -- Added new imports to Main.elm
