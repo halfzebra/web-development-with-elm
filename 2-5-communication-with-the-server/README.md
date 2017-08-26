@@ -8,6 +8,15 @@ This project is bootstrapped with [Create Elm App.](https://github.com/halfzebra
 
 ```elm
 
+-- Added new imports to Main.elm
+
+import View.Button
+import Util exposing (onChange, (=>), appendIf)
+import Http exposing (Error)
+import Request.TriviaQuestions
+import Request.Helpers exposing (queryString)
+import Json.Decode exposing (Value)
+
 -- New handlers for update function:
   Start ->
       let
