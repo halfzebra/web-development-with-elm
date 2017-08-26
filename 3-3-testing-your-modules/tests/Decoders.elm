@@ -21,7 +21,7 @@ suite : Test
 suite =
     describe "Decoders for retrieviong Trivia Questions"
         [ test "Data.Question.decoder can decode a question with HTML special characters"
-            (\() ->
+            (\_ ->
                 let
                     input =
                         """
@@ -51,7 +51,7 @@ suite =
                         )
             )
         , test "Request.TriviaQuestions.decoder fails on non-zero code"
-            (\() ->
+            (\_ ->
                 let
                     input =
                         """
@@ -67,7 +67,7 @@ suite =
                     Expect.equal (success decodedOutput) False
             )
         , test "Request.TriviaQuestions.decoder can decode correct JSON"
-            (\() ->
+            (\_ ->
                 let
                     input =
                         """
