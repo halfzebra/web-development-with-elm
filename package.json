@@ -19,7 +19,7 @@
     "url": "git+https://github.com/halfzebra/web-development-with-elm.git"
   },
   "scripts": {
-    "test": "mocha ./tests/examples.spec.js"
+    "test": "mocha ./tests/examples.spec.js --timeout 100000"
   },
   "devDependencies": {
     "chai": "^4.1.1",
