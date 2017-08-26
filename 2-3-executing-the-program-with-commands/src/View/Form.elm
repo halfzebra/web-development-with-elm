@@ -1,4 +1,4 @@
-module View.Form exposing (group, input)
+module View.Form exposing (group)
 
 import Html exposing (Html, Attribute, div)
 import Html.Attributes exposing (class)
