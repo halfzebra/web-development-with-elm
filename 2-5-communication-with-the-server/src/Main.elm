@@ -128,8 +128,7 @@ view { amount, questions } =
         , div
             []
             (questions
-                |> Array.indexedMap
-                    (\i q -> View.Question.view (Answer i) q)
+                |> Array.indexedMap (\i q -> View.Question.view (Answer i) q)
                 |> Array.toList
             )
         ]

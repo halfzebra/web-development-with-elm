@@ -4,6 +4,41 @@ Implementing HTTP communication with the server.
 
 This project is bootstrapped with [Create Elm App.](https://github.com/halfzebra/create-elm-app)
 
+### `src/Main.elm`
+
+```elm
+
+-- New handlers for update function:
+  Start ->
+      let
+          difficultyValue =
+              model.difficulty
+                  |> Data.Difficulty.toString
+                  |> String.toLower
+
+          flag =
+              Data.Difficulty.isAny model.difficulty
+      in
+          ( model
+          , Http.send GetQuestions <|
+              Http.get
+                  (Request.TriviaQuestions.apiUrl
+                      ([ "amount" => toString model.amount ]
+                          |> appendIf (not flag) ("difficulty" => difficultyValue)
+                          |> queryString
+                      )
+                  )
+                  Json.Decode.value
+          )
+
+  GetQuestions res ->
+      Debug.log "GetQuestions: " res
+          |> \_ ->
+              ( model
+              , Cmd.none
+              )
+```
+
 ### `src/Util.elm`
 
 A helper for conditionally appending an element to a list.
