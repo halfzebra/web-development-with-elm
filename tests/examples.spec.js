@@ -34,6 +34,6 @@ describe('Examples of Elm applications', () => {
     it(`should compile example ${dirName}`, () => {
       const {status} = spawn.sync('node', [elmAppCmd, 'build'], {cwd: path.join(process.cwd(), dirName)});
       expect(status).to.be.equal(0);
-    }).timeout(10000);
+    }).timeout(20000);
   })
 });
