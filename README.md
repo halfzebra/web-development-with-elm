@@ -19,7 +19,7 @@ The second section focuses on Elm Architecture and stateful applications written
 The second half of the section focuses on Json.Decode and Json.Encode modules for ensuring the type safety in runtime, while performing I/O operations.
 
   1. [Introducing Side effects with Beginner program](/2-1-introducing-side-effects-with-beginner-program/src/Main.elm)
-  2. [Tasks for asynchronous computations]()
+  2. [Tasks for asynchronous computations](/2-2-tasks-for-asynchronous-computations/README.md)
   3. [Executing the Program with Commands](/2-3-executing-the-program-with-commands/src)  
   4. [Manage the initial application state with Program with Flags](/2-4-manage-the-initial-application-state-with-program-with-flags/src)
   5. [Communication with the Server](/2-5-communication-with-the-server)
