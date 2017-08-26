@@ -83,7 +83,8 @@ view { amount, questions } =
             , value (toString amount)
             ]
             []
-        , select [ onChange (ChangeDifficulty << Data.Difficulty.get) ]
+        , select
+            [ onChange (ChangeDifficulty << Data.Difficulty.get) ]
             (List.map (\key -> option [] [ text key ])
                 Data.Difficulty.keys
             )
