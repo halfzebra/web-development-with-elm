@@ -20,6 +20,7 @@ init =
     Model Data.Difficulty.default
         5
         [ Question
+            Nothing
             "Why did the chicken cross the road?"
             "To get to the other side"
             [ "I don't know" ]
