@@ -6,6 +6,8 @@ This project is bootstrapped with [Create Elm App.](https://github.com/halfzebra
 
 ### `src/Util.elm`
 
+A helper for conditionally appending an element to a list.
+
 ```elm
 appendIf : Bool -> a -> List a -> List a
 appendIf flag value list =
@@ -16,6 +18,8 @@ appendIf flag value list =
 ```
 
 ### `src/Data/Difficulty.elm`
+
+Add `toString` function for the Difficulty Union Type.
 
 ```elm
 isAny : Difficulty -> Bool
@@ -35,6 +39,8 @@ toString lvl =
 
 ### `src/Request/Helpers.elm`
 
+Add the URL of the API.
+
 ```elm
 module Request.TriviaQuestions exposing (apiUrl)
 
@@ -45,6 +51,8 @@ apiUrl str =
 ```
 
 ### `src/Request/Helpers.elm`
+
+Add a helper for building query string.
 
 ```elm
 module Request.Helpers exposing (queryString)
