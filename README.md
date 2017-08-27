@@ -1,4 +1,4 @@
-# Web Development with Elm
+# Web Development with Elm [![Build Status](https://travis-ci.org/halfzebra/web-development-with-elm.svg?branch=master)](https://travis-ci.org/halfzebra/web-development-with-elm)
 
 ## 1. Elm: Installation and Building the first project
 
