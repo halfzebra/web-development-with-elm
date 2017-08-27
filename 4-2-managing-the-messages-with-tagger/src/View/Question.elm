@@ -6,8 +6,8 @@ import View.Button
 import View.Form
 
 
-view : (String -> msg) -> Question -> Html msg
-view answerMsg { question, correct, incorrect } =
+view : Question -> (String -> msg) -> Html msg
+view { question, correct, incorrect } answerMsg =
     let
         answers : List String
         answers =
