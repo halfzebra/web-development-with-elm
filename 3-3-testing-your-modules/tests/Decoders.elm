@@ -1,7 +1,7 @@
 module Decoders exposing (..)
 
-import Expect exposing (Expectation)
-import Test exposing (..)
+import Test exposing (Test, describe, test)
+import Expect
 import Json.Decode
 import Data.Question exposing (Question)
 import Request.TriviaQuestions exposing (TriviaResult)
