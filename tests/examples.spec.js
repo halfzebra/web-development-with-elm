@@ -35,5 +35,10 @@ describe('Examples of Elm applications', () => {
       const {status} = spawn.sync('node', [elmAppCmd, 'build'], {cwd: path.join(process.cwd(), dirName)});
       expect(status).to.be.equal(0);
     }).timeout(20000);
-  })
+  });
+
+  it(`should pass tests in example 3-3`, () => {
+    const {status} = spawn.sync('node', [elmAppCmd, 'test'], {cwd: path.join(process.cwd(), '3-3-testing-your-modules')});
+    expect(status).to.be.equal(0);
+  }).timeout(20000);
 });
