@@ -1,7 +1,6 @@
 module View.Finish exposing (view)
 
 import Html exposing (Html, div, button, text)
-import Html.Events exposing (onClick)
 import View.Button
 import View.Form
 
