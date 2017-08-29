@@ -1,4 +1,15 @@
 import './main.css';
-import { Main } from './Main.elm';
+import {Main} from './Main.elm';
 
-Main.embed(document.getElementById('root'));
+const app = Main.embed(document.getElementById('root'));
+
+app.ports.output.subscribe(console.log);
+
+setTimeout(
+  () => {
+    app.ports.incoming.send([
+      {score: 1, total: 2}
+    ])
+  },
+  1000
+);

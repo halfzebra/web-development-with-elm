@@ -1,11 +1,14 @@
-import { Main } from './Main.elm';
+import {Main} from './Main.elm';
 
 const app = Main.embed(document.getElementById('root'));
 
-app.ports.output.subscribe(console.log)
+app.ports.output.subscribe(console.log);
 
-setTimeout(() => {
+setTimeout(
+  () => {
     app.ports.incoming.send([
-        { score: 1, total: 2}
+      {score: 1, total: 2}
     ])
-}, 1000)
+  },
+  1000
+);
