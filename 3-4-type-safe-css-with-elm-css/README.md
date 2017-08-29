@@ -83,6 +83,8 @@ css =
 
 ```bash
 npm install elm-css -g
+elm-app install rtfeldman/elm-css -y
+elm-app install rtfeldman/elm-css-helpers -y
 elm-css src/Stylesheets.elm
 elm-app build
 ```
