@@ -33,7 +33,7 @@ This section outlines core development tools you will use for application develo
   1. [Development tools: elm-format, Time Traveling Debugger and elm-reactor](/3-1-development-tools-elm-format-time-traveling-debugger-and-elm-reactor/README.md)
   2. [Package manager and open-source packages](/3-2-package-manager-and-open-source-packages/README.md)
   3. [Testing your modules](/3-3-testing-your-modules/tests)
-  4. [Type safe CSS with elm-css](/4-4-type-safe-css-with-elm-css/)
+  4. [Type safe CSS with elm-css](/3-4-type-safe-css-with-elm-css/)
   
 ## 4. Going Further with Elm
 
