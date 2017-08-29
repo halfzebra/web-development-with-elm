@@ -8,6 +8,8 @@ import Html
         , select
         , option
         , div
+        , h1
+        , label
         )
 import Html.Attributes exposing (value)
 import Array exposing (Array)
@@ -15,6 +17,7 @@ import Data.Difficulty exposing (Difficulty)
 import Data.Question exposing (Question)
 import View.Question
 import View.Button
+import View.Form
 import Request.Helpers exposing (queryString)
 import Util exposing (onChange, (=>), appendIf)
 import Http exposing (Error)
@@ -172,23 +175,33 @@ view : Model -> Html Msg
 view { amount, questions } =
     div
         [ class [ TriviaContainer ] ]
-        [ div
+        [ h1 [] [ text "Open Trivia" ]
+        , div
             [ class [ ConfigForm ] ]
-            [ input
-                [ onChange UpdateAmount
-                , value (toString amount)
+            [ View.Form.group
+                [ label [] [ text "Amount of questions: " ]
+                , input
+                    [ onChange UpdateAmount
+                    , value (toString amount)
+                    , Html.Attributes.class "form-control"
+                    ]
+                    []
                 ]
-                []
-            , select
-                [ onChange (ChangeDifficulty << Data.Difficulty.get) ]
-                (List.map
-                    (\key ->
-                        option
-                            []
-                            [ text key ]
+            , View.Form.group
+                [ label [] [ text "Difficulty: " ]
+                , select
+                    [ onChange (ChangeDifficulty << Data.Difficulty.get)
+                    , Html.Attributes.class "form-control"
+                    ]
+                    (List.map
+                        (\key ->
+                            option
+                                []
+                                [ text key ]
+                        )
+                        Data.Difficulty.keys
                     )
-                    Data.Difficulty.keys
-                )
+                ]
             , View.Button.btn Start "Start"
             ]
         , div

@@ -1,7 +1,7 @@
 module TriviaCss exposing (..)
 
 import Css exposing (..)
-import Css.Elements exposing (..)
+import Css.Elements exposing (body)
 import Css.Namespace exposing (namespace)
 import SharedStyles exposing (triviaNamespace, CssClasses(..))
 
