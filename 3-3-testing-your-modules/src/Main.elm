@@ -1,229 +1,215 @@
-module Main exposing (..)
+port module Main exposing (..)
 
-import Html exposing (Html, text, div, label, select, option, input, h1)
-import Html.Attributes exposing (value, type_, selected, class, attribute, style)
-import Http exposing (Error)
-import Data.TriviaZipList exposing (TriviaZipList)
-import Data.Difficulty exposing (Difficulty(..))
+import Html
+    exposing
+        ( Html
+        , text
+        , input
+        , select
+        , option
+        , div
+        )
+import Html.Attributes exposing (value)
+import Array exposing (Array)
+import Data.Difficulty exposing (Difficulty)
+import Data.Question exposing (Question)
 import View.Question
-import View.Loading
-import View.Finish
 import View.Button
-import View.Form
-import View.Difficulty
+import Request.Helpers exposing (queryString)
+import Util exposing (onChange, (=>), appendIf)
+import Http exposing (Error)
 import Request.TriviaQuestions exposing (TriviaResult)
-import Util exposing (onChange, (=>))
-
-
--- MODEL
-
-
-type GameState
-    = Config { amount : Int, difficulty : Difficulty }
-    | Loading
-    | Playing TriviaZipList
-    | Finish GameResults
-    | Fail String
-
-
-type alias Model =
-    { state : GameState }
 
 
 type alias GameResults =
-    { score : Int, total : Int }
+    { score : Int
+    , total : Int
+    }
+
+
+type alias Model =
+    { amount : Int
+    , difficulty : Difficulty
+    , questions : Array Question
+    }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model (Config { amount = 5, difficulty = Data.Difficulty.default })
+    ( Model
+        5
+        Data.Difficulty.default
+        Array.empty
     , Cmd.none
     )
 
 
-
--- UPDATE
-
-
 type Msg
-    = NoOp
-    | UpdateAmount Int
+    = Answer Int String
+    | UpdateAmount String
+    | ChangeDifficulty Difficulty
     | Start
     | GetQuestions (Result Error TriviaResult)
-    | Answer String
     | SubmitAnswers
-    | Restart
-    | Skip
-    | ChangeDifficulty Difficulty
-    | UpdateTimer
+    | SavedGameResults (List GameResults)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case ( msg, model.state ) of
-        ( UpdateAmount value, Config values ) ->
-            ( { model | state = Config { values | amount = value } }
+    case Debug.log "MSG: " msg of
+        Answer i val ->
+            ( model.questions
+                -- Maybe Question
+                |> Array.get i
+                -- Maybe Question
+                |> Maybe.map
+                    (\q -> { q | userAnswer = Just val })
+                -- Maybe (Array Question)
+                |> Maybe.map
+                    (\q -> Array.set i q model.questions)
+                -- Maybe Model
+                |> Maybe.map (\arr -> { model | questions = arr })
+                |> Maybe.withDefault model
             , Cmd.none
             )
 
-        ( Start, Config { amount, difficulty } ) ->
-            ( { model | state = Loading }
-            , Request.TriviaQuestions.get amount difficulty GetQuestions
-            )
-
-        ( GetQuestions res, Loading ) ->
-            case res of
-                Ok { questions } ->
-                    let
-                        triviaZipList : TriviaZipList
-                        triviaZipList =
-                            Data.TriviaZipList.createTriviaZipList questions
-                    in
-                        ( { model | state = Playing triviaZipList }
+        UpdateAmount str ->
+            case String.toInt str of
+                Ok val ->
+                    if val > 50 then
+                        ( { model | amount = 50 }
+                        , Cmd.none
+                        )
+                    else
+                        ( { model | amount = val }
                         , Cmd.none
                         )
 
                 Err err ->
-                    ( { model | state = Fail (toString err) }
+                    ( model
                     , Cmd.none
                     )
 
-        ( Answer value, Playing zipList ) ->
-            ( { model
-                | state =
-                    Playing
-                        (zipList
-                            |> Data.TriviaZipList.answer value
-                            |> Data.TriviaZipList.next
-                        )
-              }
+        ChangeDifficulty lvl ->
+            ( { model | difficulty = lvl }
             , Cmd.none
             )
 
-        ( SubmitAnswers, Playing zipList ) ->
+        Start ->
             let
-                getGameResults : GameResults
-                getGameResults =
-                    GameResults
-                        (Data.TriviaZipList.score zipList)
-                        (Data.TriviaZipList.length zipList)
+                apiUrl str =
+                    "http://opentdb.com/api.php" ++ str
+
+                amount =
+                    toString model.amount
+
+                flag =
+                    not (Data.Difficulty.isAny model.difficulty)
+
+                difficultyValue =
+                    "difficulty" => (String.toLower (Data.Difficulty.toString model.difficulty))
+
+                params =
+                    [ "amount" => amount ]
+
+                request =
+                    Http.get
+                        (params
+                            |> appendIf flag difficultyValue
+                            |> queryString
+                            |> apiUrl
+                        )
+                        Request.TriviaQuestions.decoder
             in
-                ( { model | state = Finish getGameResults }
-                , Cmd.none
-                )
+                ( model, Http.send GetQuestions request )
 
-        ( Skip, Playing zipList ) ->
-            ( { model | state = Playing (Data.TriviaZipList.next zipList) }
-            , Cmd.none
-            )
+        GetQuestions res ->
+            case res of
+                Ok { questions } ->
+                    ( { model | questions = Array.fromList questions }
+                    , Cmd.none
+                    )
 
-        ( Restart, _ ) ->
-            init
+                Err err ->
+                    ( model, Cmd.none )
 
-        ( ChangeDifficulty difficulty, Config val ) ->
-            ( { model | state = Config { val | difficulty = difficulty } }
-            , Cmd.none
-            )
+        SubmitAnswers ->
+            let
+                length =
+                    Array.length model.questions
 
-        _ ->
+                score =
+                    Array.foldl
+                        (\{ userAnswer, correct } acc ->
+                            case userAnswer of
+                                Just v ->
+                                    if v == correct then
+                                        acc + 1
+                                    else
+                                        acc
+
+                                Nothing ->
+                                    acc
+                        )
+                        0
+                        model.questions
+
+                res =
+                    GameResults score length
+            in
+                ( model, output res )
+
+        SavedGameResults res ->
             ( model, Cmd.none )
 
 
-
--- VIEW
-
-
-amountTagger : Result String Int -> Msg
-amountTagger res =
-    case res of
-        Ok value ->
-            UpdateAmount value
-
-        Err err ->
-            NoOp
-
-
 view : Model -> Html Msg
-view { state } =
+view { amount, questions } =
     div
-        [ class "container"
-        , style [ ( "text-align", "center" ) ]
-        ]
-        [ h1 [] [ text "Open Trivia" ]
-        , case state of
-            Config { amount, difficulty } ->
-                div
-                    [ style
-                        [ "max-width" => "300px"
-                        , "margin" => "0 auto"
-                        ]
-                    ]
-                    [ View.Form.group
-                        [ label [] [ text "Amount of questions" ]
-                        , View.Form.input
-                            [ value (toString amount)
-                            , onChange (amountTagger << String.toInt)
-                            , type_ "number"
-                            , Html.Attributes.min (toString 1)
-                            , Html.Attributes.max (toString 50)
-                            ]
-                        ]
-                    , View.Form.group
-                        [ label [] [ text "Difficulty" ]
-                        , View.Difficulty.select difficulty ChangeDifficulty
-                        ]
-                    , View.Button.btn Start "Start"
-                    ]
-
-            Playing list ->
-                let
-                    current =
-                        Data.TriviaZipList.current list
-
-                    length =
-                        list
-                            |> Data.TriviaZipList.length
-                            |> toString
-
-                    currentIndex =
-                        list
-                            |> Data.TriviaZipList.currentIndex
-                            |> toString
-                in
-                    div
+        []
+        [ input
+            [ onChange UpdateAmount
+            , value (toString amount)
+            ]
+            []
+        , select
+            [ onChange (ChangeDifficulty << Data.Difficulty.get) ]
+            (List.map
+                (\key ->
+                    option
                         []
-                        [ View.Form.group
-                            [ View.Button.btnPrimary Restart "Start over" ]
-                        , text (currentIndex ++ "/" ++ length)
-                        , View.Question.view current Answer
-                        , View.Form.group [ View.Button.btn Skip "Skip" ]
-                        , View.Button.btnSuccess SubmitAnswers "Submit answers"
-                        ]
-
-            Loading ->
-                View.Loading.view
-
-            Finish { score, total } ->
-                View.Finish.view (toString score) (toString total) Restart
-
-            Fail err ->
-                div
-                    [ class "alert alert-danger"
-                    , attribute "role" "alert"
-                    ]
-                    [ text err ]
+                        [ text key ]
+                )
+                Data.Difficulty.keys
+            )
+        , View.Button.btn Start "Start"
+        , div
+            []
+            (questions
+                |> Array.indexedMap
+                    (\i q -> View.Question.view (Answer i) q)
+                |> Array.toList
+            )
+        , View.Button.btn SubmitAnswers "Submit"
         ]
 
 
+port output : GameResults -> Cmd msg
 
----- PROGRAM ----
+
+port incoming : (List GameResults -> msg) -> Sub msg
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    incoming SavedGameResults
 
 
 main : Program Never Model Msg
 main =
     Html.program
-        { view = view
-        , init = init
+        { init = init
         , update = update
-        , subscriptions = always Sub.none
+        , view = view
+        , subscriptions = subscriptions
         }
