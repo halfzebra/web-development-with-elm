@@ -1,14 +1,10 @@
 module Data.TriviaZipList
     exposing
         ( TriviaZipList
-        , next
-        , createTriviaZipList
-        , current
-        , currentIndex
-        , length
-        , score
+        , fromList
         , answer
-        , hasUnansweredLeft
+        , next
+        , current
         )
 
 import Data.Question exposing (Question)
@@ -22,8 +18,8 @@ type TriviaZipList
         }
 
 
-createTriviaZipList : List Question -> TriviaZipList
-createTriviaZipList list =
+fromList : List Question -> TriviaZipList
+fromList list =
     case list of
         [ x ] ->
             TriviaZipList
@@ -61,39 +57,6 @@ next (TriviaZipList { previous, current, rest }) =
                 }
 
 
-current : TriviaZipList -> Question
-current (TriviaZipList list) =
-    .current list
-
-
-currentIndex : TriviaZipList -> Int
-currentIndex (TriviaZipList { previous }) =
-    (List.length previous) + 1
-
-
-length : TriviaZipList -> Int
-length (TriviaZipList { previous, current, rest }) =
-    List.length (previous ++ [ current ] ++ rest)
-
-
-score : TriviaZipList -> Int
-score (TriviaZipList { previous, current, rest }) =
-    List.foldl
-        (\{ userAnswer, correct } acc ->
-            case userAnswer of
-                Just val ->
-                    if val == correct then
-                        acc + 1
-                    else
-                        acc
-
-                _ ->
-                    acc
-        )
-        0
-        (previous ++ [ current ] ++ rest)
-
-
 answer : String -> TriviaZipList -> TriviaZipList
 answer val (TriviaZipList { previous, current, rest }) =
     TriviaZipList
@@ -103,15 +66,6 @@ answer val (TriviaZipList { previous, current, rest }) =
         }
 
 
-hasUnansweredLeft : TriviaZipList -> Bool
-hasUnansweredLeft (TriviaZipList { previous, current, rest }) =
-    (previous ++ [ current ] ++ rest)
-        |> List.filter
-            (\{ userAnswer } ->
-                if userAnswer == Nothing then
-                    True
-                else
-                    False
-            )
-        |> List.length
-        |> (<) 0
+current : TriviaZipList -> Question
+current (TriviaZipList list) =
+    .current list
