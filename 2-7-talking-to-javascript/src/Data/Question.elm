@@ -1,13 +1,6 @@
 module Data.Question exposing (Question, decoder)
 
-import Json.Decode
-    exposing
-        ( Decoder
-        , map3
-        , field
-        , string
-        , list
-        )
+import Json.Decode exposing (Decoder, map3, field, string, list)
 
 
 type alias Question =

@@ -14,11 +14,11 @@ import Array exposing (Array)
 import Data.Difficulty exposing (Difficulty)
 import Data.Question exposing (Question)
 import View.Question
-import View.Button
-import Request.Helpers exposing (queryString)
 import Util exposing (onChange, (=>), appendIf)
+import Request.TriviaQuestions exposing (TriviaResults)
+import Request.Helpers exposing (queryString)
+import View.Button
 import Http exposing (Error)
-import Request.TriviaQuestions exposing (TriviaResult)
 
 
 type alias GameResults =
@@ -49,7 +49,7 @@ type Msg
     | UpdateAmount String
     | ChangeDifficulty Difficulty
     | Start
-    | GetQuestions (Result Error TriviaResult)
+    | GetQuestions (Result Error TriviaResults)
     | SubmitAnswers
     | SavedGameResults (List GameResults)
 
@@ -97,41 +97,36 @@ update msg model =
 
         Start ->
             let
-                apiUrl str =
-                    "http://opentdb.com/api.php" ++ str
-
-                amount =
-                    toString model.amount
+                difficultyValue =
+                    model.difficulty
+                        |> Data.Difficulty.toString
+                        |> String.toLower
 
                 flag =
-                    not (Data.Difficulty.isAny model.difficulty)
-
-                difficultyValue =
-                    "difficulty" => (String.toLower (Data.Difficulty.toString model.difficulty))
-
-                params =
-                    [ "amount" => amount ]
-
-                request =
+                    Data.Difficulty.isAny model.difficulty
+            in
+                ( model
+                , Http.send GetQuestions <|
                     Http.get
-                        (params
-                            |> appendIf flag difficultyValue
-                            |> queryString
-                            |> apiUrl
+                        (Request.TriviaQuestions.apiUrl
+                            ([ "amount" => toString model.amount ]
+                                |> appendIf (not flag)
+                                    ("difficulty" => difficultyValue)
+                                |> queryString
+                            )
                         )
                         Request.TriviaQuestions.decoder
-            in
-                ( model, Http.send GetQuestions request )
+                )
 
         GetQuestions res ->
-            case res of
+            ( case res of
                 Ok { questions } ->
-                    ( { model | questions = Array.fromList questions }
-                    , Cmd.none
-                    )
+                    { model | questions = Array.fromList questions }
 
                 Err err ->
-                    ( model, Cmd.none )
+                    model
+            , Cmd.none
+            )
 
         SubmitAnswers ->
             let
