@@ -1,4 +1,4 @@
-module Request.TriviaQuestions exposing (apiUrl)
+module Request.TriviaQuestions exposing (..)
 
 
 apiUrl : String -> String

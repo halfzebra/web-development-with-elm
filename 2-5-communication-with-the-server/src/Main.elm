@@ -1,17 +1,25 @@
 module Main exposing (..)
 
-import Html exposing (Html, text, input, select, option, div)
+import Html
+    exposing
+        ( Html
+        , text
+        , input
+        , select
+        , option
+        , div
+        )
 import Html.Attributes exposing (value)
 import Array exposing (Array)
 import Data.Difficulty exposing (Difficulty)
 import Data.Question exposing (Question)
 import View.Question
-import View.Button
 import Util exposing (onChange, (=>), appendIf)
-import Http exposing (Error)
 import Request.TriviaQuestions
 import Request.Helpers exposing (queryString)
+import View.Button
 import Json.Decode exposing (Value)
+import Http exposing (Error)
 
 
 type alias Model =
@@ -95,7 +103,8 @@ update msg model =
                     Http.get
                         (Request.TriviaQuestions.apiUrl
                             ([ "amount" => toString model.amount ]
-                                |> appendIf (not flag) ("difficulty" => difficultyValue)
+                                |> appendIf (not flag)
+                                    ("difficulty" => difficultyValue)
                                 |> queryString
                             )
                         )
@@ -103,11 +112,7 @@ update msg model =
                 )
 
         GetQuestions res ->
-            Debug.log "GetQuestions: " res
-                |> \_ ->
-                    ( model
-                    , Cmd.none
-                    )
+            ( model, Cmd.none )
 
 
 view : Model -> Html Msg
@@ -121,14 +126,20 @@ view { amount, questions } =
             []
         , select
             [ onChange (ChangeDifficulty << Data.Difficulty.get) ]
-            (List.map (\key -> option [] [ text key ])
+            (List.map
+                (\key ->
+                    option
+                        []
+                        [ text key ]
+                )
                 Data.Difficulty.keys
             )
         , View.Button.btn Start "Start"
         , div
             []
             (questions
-                |> Array.indexedMap (\i q -> View.Question.view (Answer i) q)
+                |> Array.indexedMap
+                    (\i q -> View.Question.view (Answer i) q)
                 |> Array.toList
             )
         ]

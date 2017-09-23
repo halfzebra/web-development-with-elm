@@ -4,8 +4,8 @@ module Data.Difficulty
         , keys
         , default
         , get
-        , isAny
         , toString
+        , isAny
         )
 
 import Util exposing ((=>))
@@ -50,16 +50,15 @@ get key =
         |> Maybe.withDefault default
 
 
-isAny : Difficulty -> Bool
-isAny lvl =
-    lvl == Any
-
-
 toString : Difficulty -> String
 toString lvl =
     list
-        |> List.filter (\( k, v ) -> v == lvl)
-        -- Maybe ( String, Difficulty )
+        |> List.filter (\( _, v ) -> v == lvl)
         |> List.head
         |> Maybe.map Tuple.first
         |> Maybe.withDefault "Any"
+
+
+isAny : Difficulty -> Bool
+isAny lvl =
+    lvl == Any
