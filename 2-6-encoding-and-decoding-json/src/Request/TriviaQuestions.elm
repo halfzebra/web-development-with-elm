@@ -1,18 +1,23 @@
 module Request.TriviaQuestions exposing (..)
 
-import Json.Decode exposing (Decoder, field, int, list)
 import Data.Question exposing (Question)
+import Json.Decode exposing (Decoder, map2, field, int, list)
 
 
-type alias TriviaResult =
+apiUrl : String -> String
+apiUrl str =
+    "https://opentdb.com/api.php" ++ str
+
+
+type alias TriviaResults =
     { code : Int
     , questions : List Question
     }
 
 
-decoder : Decoder TriviaResult
+decoder : Decoder TriviaResults
 decoder =
-    Json.Decode.map2
-        TriviaResult
+    map2
+        TriviaResults
         (field "response_code" int)
         (field "results" (list Data.Question.decoder))
