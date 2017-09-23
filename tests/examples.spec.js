@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const spawn = require('cross-spawn');
-const expect = require('chai').expect;
+const expect = require('unexpected');
 const elmAppCmd = require.resolve('create-elm-app/bin/elm-app-cli.js');
 
 const exampleDirs = [
@@ -33,12 +33,12 @@ describe('Examples of Elm applications', () => {
   exampleDirs.forEach(dirName => {
     it(`should compile example ${dirName}`, () => {
       const {status} = spawn.sync('node', [elmAppCmd, 'build'], {cwd: path.join(process.cwd(), dirName)});
-      expect(status).to.be.equal(0);
+      expect(status, 'to be', 0);
     }).timeout(20000);
   });
 
   it(`should pass tests in example 3-3`, () => {
     const {status} = spawn.sync('node', [elmAppCmd, 'test'], {cwd: path.join(process.cwd(), '3-3-testing-your-modules')});
-    expect(status).to.be.equal(0);
+    expect(status, 'to be', 0);
   }).timeout(20000);
 });

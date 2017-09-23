@@ -22,7 +22,7 @@
     "test": "mocha ./tests/examples.spec.js --timeout 100000"
   },
   "devDependencies": {
-    "chai": "^4.1.1",
-    "mocha": "^3.5.0"
+    "mocha": "^3.5.0",
+    "unexpected": "^10.35.0"
   }
 }
