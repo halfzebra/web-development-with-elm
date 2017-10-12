@@ -6,7 +6,7 @@ const elmAppCmd = require.resolve('create-elm-app/bin/elm-app-cli.js');
 
 const exampleDirs = [
   '1-1-starting-up-with-your-first-elm-app',
-  '1-2-expressing-the-model-with-primitive-built-in-data-types',
+  '1-2-get-familiar-with-elm-syntax',
   '1-3-expressing-the-model-with-built-in-data-types',
   '1-4-persistent-data-structures-in-elm',
   '1-5-elms-type-system-and-type-inference',
