@@ -5,11 +5,11 @@
 In the first section, we will cover the basic syntax features of functional programming language, core data types, and persistent data structures. You will learn the core ideas behind Elm’s type system and how Type inference helps to prevent the runtime errors. In the last couple videos, we will look into module system and the built-in module for rendering HTML and inline CSS.
 
   1. [Starting-up with your first Elm App](/1-1-starting-up-with-your-first-elm-app/README.md)
-  2. [Expressing the Model with primitive built-in Data types](/1-2-expressing-the-model-with-primitive-built-in-data-types/src/Main.elm)
+  2. [Get familiar with Elm syntax](/1-2-get-familiar-with-elm-syntax/src/Main.elm)
   3. [Expressing the Model with Built-in Data types](/1-3-expressing-the-model-with-built-in-data-types/src/Main.elm)
   4. [Persistent data structures in Elm](/1-4-persistent-data-structures-in-elm/src/Main.elm)
   5. [Elm’s Type system and Type inference](/1-5-elms-type-system-and-type-inference/src/Main.elm)
-  6. [Maybe and the Result data types](/1-6-maybe-and-result-data-types/Main.elm)
+  6. [Maybe and the Result data types](/1-6-maybe-and-result-data-types/src/Main.elm)
   7. [Module system in Elm](/1-7-module-system-in-elm/src/Main.elm)
   8. [Rendering the Model with HTML and CSS](/1-8-rendering-the-model-with-html-and-css/src/Main.elm#L28)
   
