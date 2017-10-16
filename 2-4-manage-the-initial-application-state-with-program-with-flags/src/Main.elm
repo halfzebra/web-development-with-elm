@@ -9,6 +9,10 @@ import View.Question
 import Util exposing (onChange)
 
 
+type alias Flags =
+    Int
+
+
 type alias Model =
     { amount : Int
     , difficulty : Difficulty
@@ -16,10 +20,10 @@ type alias Model =
     }
 
 
-init : ( Model, Cmd Msg )
-init =
+init : Flags -> ( Model, Cmd Msg )
+init flags =
     ( Model
-        5
+        flags
         Data.Difficulty.default
         Array.empty
     , Cmd.none
@@ -97,9 +101,9 @@ view { amount, questions } =
         ]
 
 
-main : Program Never Model Msg
+main : Program Flags Model Msg
 main =
-    Html.program
+    Html.programWithFlags
         { init = init
         , update = update
         , view = view
