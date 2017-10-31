@@ -14,7 +14,6 @@ const exampleDirs = [
   '1-7-module-system-in-elm',
   '1-8-rendering-the-model-with-html-and-css',
   '2-1-introducing-side-effects-with-beginner-program',
-  '2-2-tasks-for-asynchronous-computations',
   '2-3-executing-the-program-with-commands',
   '2-4-manage-the-initial-application-state-with-program-with-flags',
   '2-5-communication-with-the-server',
@@ -36,6 +35,11 @@ describe('Examples of Elm applications', () => {
       expect(status, 'to be', 0);
     }).timeout(20000);
   });
+
+  it(`should be able to compile example 2-2`, () => {
+    const {status} = spawn.sync('node', [elmAppCmd, 'make Main.elm --yes'], {cwd: path.join(process.cwd(), '2-2-tasks-for-asynchronous-computations')});
+    expect(status, 'to be', 0);
+  }).timeout(20000);
 
   it(`should pass tests in example 3-3`, () => {
     const {status} = spawn.sync('node', [elmAppCmd, 'test'], {cwd: path.join(process.cwd(), '3-3-testing-your-modules')});
