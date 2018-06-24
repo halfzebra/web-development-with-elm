@@ -2,6 +2,16 @@
 
 Use the power of Type inference to ensure the correctness of the styles in your application.
 
+## DISCLAIMER
+
+This example is using an older version of [elm-css,](https://github.com/rtfeldman/elm-css) please make sure you are installing the correct versions.
+
+```bash
+npm install elm@0.18 elm-css@0.6.1 -g
+elm-app install rtfeldman/elm-css 9.1.0 -y
+elm-app install rtfeldman/elm-css-helpers 2.1.0 -y
+```
+
 ## Changes
 
 ### `src/index.js`
@@ -82,9 +92,9 @@ css =
 ## Running the example
 
 ```bash
-npm install elm-css -g
-elm-app install rtfeldman/elm-css -y
-elm-app install rtfeldman/elm-css-helpers -y
+npm install elm@0.18 elm-css@0.6.1 -g
+elm-app install rtfeldman/elm-css 9.1.0 -y
+elm-app install rtfeldman/elm-css-helpers 2.1.0 -y
 elm-css src/Stylesheets.elm
 elm-app build
 ```
